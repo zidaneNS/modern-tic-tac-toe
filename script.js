@@ -1,4 +1,5 @@
 const cellCollections = Array.from(document.getElementsByClassName("cell"));
+const title = document.getElementById("title");
 const cells = [];
 let ind = 0;
 for (let i = 0; i < 3; i++) {
@@ -13,7 +14,7 @@ for (let i = 0; i < 3; i++) {
 
 let ORound = true;
 
-function checkWin(player) {
+const checkWin = (player) => {
   // Cek baris
   for (let i = 0; i < 3; i++) {
     if (
@@ -50,7 +51,12 @@ function checkWin(player) {
     return true;
   }
   return false;
-}
+};
+
+// disable all button
+const disableAll = () => {
+  cells.forEach((cell) => cell.forEach((el) => (el.disabled = true)));
+};
 
 cells.forEach((cell) => {
   cell.forEach((el) => {
@@ -59,13 +65,15 @@ cells.forEach((cell) => {
         if (ORound) {
           el.textContent = "O";
           if (checkWin("O")) {
-            console.log("O WINS!");
+            title.textContent = "O Wins";
+            disableAll();
           }
           ORound = false;
         } else {
           el.textContent = "X";
           if (checkWin("X")) {
-            console.log("X WINS!");
+            title.textContent = "X Wins";
+            disableAll();
           }
           ORound = true;
         }
