@@ -1,27 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tic-Tac-Toe</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <h1 id="title">Tic-Tac-Toe</h1>
-      <div class="board">
-        <button class="cell" id="cell-1"></button>
-        <button class="cell" id="cell-2"></button>
-        <button class="cell" id="cell-3"></button>
-        <button class="cell" id="cell-4"></button>
-        <button class="cell" id="cell-5"></button>
-        <button class="cell" id="cell-6"></button>
-        <button class="cell" id="cell-7"></button>
-        <button class="cell" id="cell-8"></button>
-        <button class="cell" id="cell-9"></button>
-      </div>
-    </div>
 
-    <script type="module" src="script.js"></script>
-  </body>
+<head>
+    <meta charset8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TicTacToe</title>
+    <link rel="shotcut icon" type="img" href="tic-tac-toe.png"/>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <header id="header">
+            <div class="player player-active" id="displayPlayer1">
+                P1
+            </div>
+            
+            <div class="tittleHeader">
+                <h3></h3>
+            </div>
+
+
+            <div class="player player-active" id="displayPlayer2">
+                P2
+            </div>
+        </header>
+
+        <div id="board">
+            <div class="cell">
+                0
+            </div>
+            <div class="cell">
+                1
+            </div>
+            <div class="cell">
+                2
+            </div>
+            <div class="cell">
+                3
+            </div>
+            <div class="cell">
+                4
+            </div>
+            <div class="cell">
+                5
+            </div>
+            <div class="cell">
+                6
+            </div>
+            <div class="cell">
+                7
+            </div>
+            <div class="cell">
+                8
+            </div>
+        </div>
+
+        <div>
+            <div id="pawn">
+                <div class="pawnCell">
+                    Kg
+                </div>
+                <div class="pawnCell">
+                    Kn
+                </div>
+                <div class="pawnCell">
+                    P
+                </div>
+            </div>
+        </div>
+        <button id="restartButton">
+            Restart
+        </button>
+    </main>
+    
+</body>
 </html>
