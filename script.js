@@ -79,10 +79,13 @@ let category = 1;
 // menentukan kategori player
 window.addEventListener("keydown", (e) => {
   if (e.key == "p") {
+    alert("you choose pion");
     category = 1;
   } else if (e.key == "k") {
+    alert("you choose knight");
     category = 2;
   } else if (e.key == "d") {
+    alert("you choose dekan");
     category = 3;
   }
 });
@@ -140,11 +143,19 @@ cells.forEach((cell) => {
           el.textContent = playerO.text;
           el.id = category;
           playerO.getPlayer(category);
+          if (checkWin(playerO.text)) {
+            disableAll();
+            title.textContent = `${playerO.text} Win`;
+          }
           ORound = false;
         } else {
           el.textContent = playerX.text;
           el.id = category;
           playerX.getPlayer(category);
+          if (checkWin(playerX.text)) {
+            disableAll();
+            title.textContent = `${playerX.text} Win`;
+          }
           ORound = true;
         }
       }
