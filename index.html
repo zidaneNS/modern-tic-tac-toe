@@ -1,77 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TicTacToe</title>
-    <link rel="shotcut icon" type="img" href="tic-tac-toe.png"/>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="shotcut icon" type="img" href="tic-tac-toe.png" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <main>
-        <header id="header">
-            <div class="player player-active" id="displayPlayer1">
-                P1
-            </div>
-            
-            <div class="tittleHeader">
-                <h3></h3>
-            </div>
+      <header id="header">
+        <div class="player player-active" id="displayPlayer1">P1</div>
 
-
-            <div class="player player-active" id="displayPlayer2">
-                P2
-            </div>
-        </header>
-
-        <div id="board">
-            <div class="cell">
-                0
-            </div>
-            <div class="cell">
-                1
-            </div>
-            <div class="cell">
-                2
-            </div>
-            <div class="cell">
-                3
-            </div>
-            <div class="cell">
-                4
-            </div>
-            <div class="cell">
-                5
-            </div>
-            <div class="cell">
-                6
-            </div>
-            <div class="cell">
-                7
-            </div>
-            <div class="cell">
-                8
-            </div>
+        <div class="tittleHeader">
+          <h3></h3>
         </div>
 
-        <div>
-            <div id="pawn">
-                <div class="pawnCell">
-                    Kg
-                </div>
-                <div class="pawnCell">
-                    Kn
-                </div>
-                <div class="pawnCell">
-                    P
-                </div>
-            </div>
+        <div class="player player-active" id="displayPlayer2">P2</div>
+      </header>
+
+      <div id="board">
+        <div id="0" class="cell"></div>
+        <div id="0" class="cell"></div>
+        <div id="0" class="cell"></div>
+        <div id="0" class="cell"></div>
+        <div id="0" class="cell"></div>
+        <div id="0" class="cell"></div>
+        <div id="0" class="cell"></div>
+        <div id="0" class="cell"></div>
+        <div id="0" class="cell"></div>
+      </div>
+
+      <div>
+        <div id="pawn">
+          <div class="pawnCell">Kg</div>
+          <div class="pawnCell">Kn</div>
+          <div class="pawnCell">P</div>
         </div>
-        <button id="restartButton">
-            Restart
-        </button>
+      </div>
+      <button id="restartButton">Restart</button>
     </main>
-    
-</body>
+    <script type="module" src="script.js"></script>
+  </body>
 </html>
