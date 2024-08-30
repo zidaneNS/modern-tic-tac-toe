@@ -5,7 +5,7 @@ cellCollections.forEach((cell) => {
   cell.id = 0;
 });
 
-// mengubah array satu dimensi ke dua dimensi
+// Mengubah array satu dimensi ke dua dimensi
 const cells = [];
 let ind = 0;
 for (let i = 0; i < 3; i++) {
@@ -25,12 +25,17 @@ class Player {
     this.knight = 3;
     this.dekan = 2;
     this.value = 1;
+    this.canPion = true;
+    this.canKnight = true;
+    this.canDekan = true;
+    this.canClick = this.canPion;
   }
   getPion() {
     if (this.pion > 0) {
       this.pion--;
-      console.log("cok", this.pion);
       this.value = 1;
+    } else {
+      this.canPion = false;
     }
   }
 
@@ -38,7 +43,8 @@ class Player {
     if (this.knight > 0) {
       this.knight--;
       this.value = 2;
-      console.log(this.knight);
+    } else {
+      this.canKnight = false;
     }
   }
 
@@ -46,7 +52,8 @@ class Player {
     if (this.dekan) {
       this.dekan--;
       this.value = 3;
-      console.log(this.dekan);
+    } else {
+      this.canDekan = false;
     }
   }
 
@@ -54,12 +61,15 @@ class Player {
     switch (val) {
       case 1:
         this.getPion();
+        this.canClick = this.canPion;
         break;
       case 2:
         this.getKnight();
+        this.canClick = this.canKnight;
         break;
       case 3:
         this.getDekan();
+        this.canClick = this.canDekan;
         break;
       default:
         break;
@@ -67,16 +77,16 @@ class Player {
   }
 }
 
-// giliran O
+// Giliran O
 let ORound = true;
 
-// mendeklarasikan player
+// Mendeklarasikan player
 const playerO = new Player("O");
 const playerX = new Player("X");
 
 let category = 1;
 
-// menentukan kategori player
+// Menentukan kategori player
 window.addEventListener("keydown", (e) => {
   if (e.key == "p") {
     alert("you choose pion");
@@ -90,7 +100,15 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
+const highlightWinningCells = async (winningCells) => {
+  for (let i = 0; i < winningCells.length; i++) {
+    winningCells[i].style.backgroundColor = "green";
+    await new Promise((resolve) => setTimeout(resolve, 300)); // Beri jeda waktu 300ms untuk efek visual
+  }
+};
+
 const checkWin = (player) => {
+  const winningCells = [];
   // Cek baris
   for (let i = 0; i < 3; i++) {
     if (
@@ -98,7 +116,8 @@ const checkWin = (player) => {
       cells[i][1].textContent === player &&
       cells[i][2].textContent === player
     ) {
-      return true;
+      winningCells.push(cells[i][0], cells[i][1], cells[i][2]);
+      return winningCells;
     }
   }
   // Cek kolom
@@ -108,7 +127,8 @@ const checkWin = (player) => {
       cells[1][i].textContent === player &&
       cells[2][i].textContent === player
     ) {
-      return true;
+      winningCells.push(cells[0][i], cells[1][i], cells[2][i]);
+      return winningCells;
     }
   }
   // Cek diagonal
@@ -117,48 +137,68 @@ const checkWin = (player) => {
     cells[1][1].textContent === player &&
     cells[2][2].textContent === player
   ) {
-    return true;
+    winningCells.push(cells[0][0], cells[1][1], cells[2][2]);
+    return winningCells;
   }
   if (
     cells[0][2].textContent === player &&
     cells[1][1].textContent === player &&
     cells[2][0].textContent === player
   ) {
-    return true;
+    winningCells.push(cells[0][2], cells[1][1], cells[2][0]);
+    return winningCells;
   }
-  return false;
+  return null;
 };
 
-// disable all button
+// Disable all button
 const disableAll = () => {
-  cells.forEach((cell) => cell.forEach((el) => (el.disabled = true)));
+  cells.forEach((cell) =>
+    cell.forEach((el) => {
+      el.removeEventListener("click", handleClick);
+    })
+  );
 };
 
-// logic tictactoe
+// Logic TicTacToe
+const handleClick = async (el) => {
+  if (category > el.target.id) {
+    if (ORound) {
+      playerO.getPlayer(category);
+      if (playerO.canClick) {
+        el.target.textContent = playerO.text;
+        el.target.id = category;
+        const winningCells = checkWin(playerO.text);
+        if (winningCells) {
+          await highlightWinningCells(winningCells);
+          alert(`${playerO.text} Win`);
+          disableAll();
+        }
+        ORound = false;
+      } else {
+        alert("Kontol");
+      }
+    } else {
+      playerX.getPlayer(category);
+      if (playerX.canClick) {
+        el.target.textContent = playerX.text;
+        el.target.id = category;
+        const winningCells = checkWin(playerX.text);
+        if (winningCells) {
+          await highlightWinningCells(winningCells);
+          alert(`${playerX.text} Win`);
+          disableAll();
+        }
+        ORound = true;
+      } else {
+        alert("Kontol");
+      }
+    }
+  }
+};
+
 cells.forEach((cell) => {
   cell.forEach((el) => {
-    el.addEventListener("click", () => {
-      if (category > el.id) {
-        if (ORound) {
-          el.textContent = playerO.text;
-          el.id = category;
-          playerO.getPlayer(category);
-          if (checkWin(playerO.text)) {
-            disableAll();
-            title.textContent = `${playerO.text} Win`;
-          }
-          ORound = false;
-        } else {
-          el.textContent = playerX.text;
-          el.id = category;
-          playerX.getPlayer(category);
-          if (checkWin(playerX.text)) {
-            disableAll();
-            title.textContent = `${playerX.text} Win`;
-          }
-          ORound = true;
-        }
-      }
-    });
+    el.addEventListener("click", handleClick);
   });
 });
