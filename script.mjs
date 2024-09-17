@@ -23,11 +23,11 @@ class Player {
     this.text = text;
     this.pion = 3;
     this.knight = 3;
-    this.dekan = 2;
+    this.king = 2;
     this.value = 1;
     this.canPion = true;
     this.canKnight = true;
-    this.canDekan = true;
+    this.canKing = true;
     this.canClick = this.canPion;
     if (this.text === "X") {
       this.color = "hitam";
@@ -57,13 +57,13 @@ class Player {
     }
   }
 
-  getDekan() {
-    if (this.dekan) {
-      this.dekan--;
+  getKing() {
+    if (this.king) {
+      this.king--;
       this.value = 3;
       this.img.src = `assets/king ${this.color}.png`;
     } else {
-      this.canDekan = false;
+      this.canKing = false;
     }
   }
 
@@ -78,8 +78,8 @@ class Player {
         this.canClick = this.canKnight;
         break;
       case 3:
-        this.getDekan();
-        this.canClick = this.canDekan;
+        this.getKing();
+        this.canClick = this.canKing;
         break;
       default:
         break;
@@ -105,7 +105,7 @@ window.addEventListener("keydown", (e) => {
     alert("you choose knight");
     category = 2;
   } else if (e.key == "d") {
-    alert("you choose dekan");
+    alert("you choose king");
     category = 3;
   }
 });
@@ -170,44 +170,33 @@ const disableAll = () => {
   );
 };
 
-// Logic TicTacToe
 const handleClick = async (el) => {
   if (category > el.target.id) {
     if (ORound) {
-      playerO.getPlayer(category);
-      if (playerO.canClick) {
-        let cellImg = new Image();
-        cellImg.src = playerO.img.src;
-        el.target.appendChild(cellImg);
-        el.target.id = category;
-        const winningCells = checkWin(playerO.text);
-        if (winningCells) {
-          await highlightWinningCells(winningCells);
-          alert(`${playerO.text} Win`);
-          disableAll();
-        }
-        ORound = false;
-      } else {
-        alert("Kontol");
-      }
+      await getResponse(playerO, el);
+      ORound = false;
     } else {
-      playerX.getPlayer(category);
-      if (playerX.canClick) {
-        let cellImg = new Image();
-        cellImg.src = playerX.img.src;
-        el.target.appendChild(cellImg);
-        el.target.id = category;
-        const winningCells = checkWin(playerX.text);
-        if (winningCells) {
-          await highlightWinningCells(winningCells);
-          alert(`${playerX.text} Win`);
-          disableAll();
-        }
-        ORound = true;
-      } else {
-        alert("Kontol");
-      }
+      await getResponse(playerX, el);
+      ORound = true;
     }
+  }
+};
+
+const getResponse = async (player, el) => {
+  player.getPlayer(category);
+  if (player.canClick) {
+    const cellImg = new Image();
+    cellImg.src = player.img.src;
+    el.target.appendChild(cellImg);
+    el.target.id = category;
+    const winningCells = checkWin(player.text);
+    if (winningCells) {
+      await highlightWinningCells(winningCells);
+      alert(`${player.text} Win`);
+      disableAll();
+    }
+  } else {
+    alert("bidak habis");
   }
 };
 
