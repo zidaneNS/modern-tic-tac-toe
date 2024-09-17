@@ -29,11 +29,19 @@ class Player {
     this.canKnight = true;
     this.canDekan = true;
     this.canClick = this.canPion;
+    if (this.text === "X") {
+      this.color = "hitam";
+    } else {
+      this.color = "putih";
+    }
+    this.img = new Image();
+    this.img.src = `/assets/pion ${this.color}.png`;
   }
   getPion() {
     if (this.pion > 0) {
       this.pion--;
       this.value = 1;
+      this.img.src = `assets/pion ${this.color}.png`;
     } else {
       this.canPion = false;
     }
@@ -43,6 +51,7 @@ class Player {
     if (this.knight > 0) {
       this.knight--;
       this.value = 2;
+      this.img.src = `assets/knight ${this.color}.png`;
     } else {
       this.canKnight = false;
     }
@@ -52,6 +61,7 @@ class Player {
     if (this.dekan) {
       this.dekan--;
       this.value = 3;
+      this.img.src = `assets/king ${this.color}.png`;
     } else {
       this.canDekan = false;
     }
@@ -166,7 +176,9 @@ const handleClick = async (el) => {
     if (ORound) {
       playerO.getPlayer(category);
       if (playerO.canClick) {
-        el.target.textContent = playerO.text;
+        let cellImg = new Image();
+        cellImg.src = playerO.img.src;
+        el.target.appendChild(cellImg);
         el.target.id = category;
         const winningCells = checkWin(playerO.text);
         if (winningCells) {
@@ -181,7 +193,9 @@ const handleClick = async (el) => {
     } else {
       playerX.getPlayer(category);
       if (playerX.canClick) {
-        el.target.textContent = playerX.text;
+        let cellImg = new Image();
+        cellImg.src = playerX.img.src;
+        el.target.appendChild(cellImg);
         el.target.id = category;
         const winningCells = checkWin(playerX.text);
         if (winningCells) {
