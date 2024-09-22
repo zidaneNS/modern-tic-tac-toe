@@ -1,3 +1,5 @@
+import { Player } from "./Player.mjs";
+
 const cellCollections = Array.from(document.getElementsByClassName("cell"));
 const title = document.getElementById("title");
 
@@ -16,75 +18,6 @@ for (let i = 0; i < 3; i++) {
     row.push(el);
   }
   cells.push(row);
-}
-
-class Player {
-  constructor(text) {
-    this.text = text;
-    this.pion = 3;
-    this.knight = 3;
-    this.king = 2;
-    this.value = 1;
-    this.canPion = true;
-    this.canKnight = true;
-    this.canKing = true;
-    this.canClick = this.canPion;
-    if (this.text === "X") {
-      this.color = "hitam";
-    } else {
-      this.color = "putih";
-    }
-    this.img = new Image();
-    this.img.src = `/assets/pion ${this.color}.png`;
-  }
-  getPion() {
-    if (this.pion > 0) {
-      this.pion--;
-      this.value = 1;
-      this.img.src = `assets/pion ${this.color}.png`;
-    } else {
-      this.canPion = false;
-    }
-  }
-
-  getKnight() {
-    if (this.knight > 0) {
-      this.knight--;
-      this.value = 2;
-      this.img.src = `assets/knight ${this.color}.png`;
-    } else {
-      this.canKnight = false;
-    }
-  }
-
-  getKing() {
-    if (this.king) {
-      this.king--;
-      this.value = 3;
-      this.img.src = `assets/king ${this.color}.png`;
-    } else {
-      this.canKing = false;
-    }
-  }
-
-  getPlayer(val) {
-    switch (val) {
-      case 1:
-        this.getPion();
-        this.canClick = this.canPion;
-        break;
-      case 2:
-        this.getKnight();
-        this.canClick = this.canKnight;
-        break;
-      case 3:
-        this.getKing();
-        this.canClick = this.canKing;
-        break;
-      default:
-        break;
-    }
-  }
 }
 
 // Giliran O
@@ -205,3 +138,42 @@ cells.forEach((cell) => {
     el.addEventListener("click", handleClick);
   });
 });
+
+const restart = document.getElementById('restartButton');
+
+restart.addEventListener('click', () => {
+   cells.forEach((cellRow) => {
+    cellRow.forEach((cell) => {
+      cell.textContent = ''; // Hapus isi teks (X/O)
+      cell.id = 0; // Atur kembali ID ke nilai awal
+      cell.style.backgroundColor = ''; // Hapus warna latar belakang jika ada
+      cell.innerHTML = ''; // Hapus elemen gambar yang ada
+    });
+  });
+
+  // Reset variabel permainan
+  ORound = true; // Setel giliran kembali ke pemain O
+  category = 1; // Setel kategori bidak ke nilai awal
+
+  // Reset objek player
+  playerO.pion = 3;
+  playerO.knight = 3;
+  playerO.king = 2;
+  playerO.canPion = true;
+  playerO.canKnight = true;
+  playerO.canKing = true;
+
+  playerX.pion = 3;
+  playerX.knight = 3;
+  playerX.king = 2;
+  playerX.canPion = true;
+  playerX.canKnight = true;
+  playerX.canKing = true;
+
+  // Aktifkan kembali klik pada sel
+  cells.forEach((cellRow) => {
+    cellRow.forEach((cell) => {
+      cell.addEventListener("click", handleClick);
+    });
+  });
+})

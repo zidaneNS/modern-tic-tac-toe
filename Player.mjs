@@ -21,7 +21,7 @@ class Player {
     if (this.pion > 0) {
       this.pion--;
       this.value = 1;
-      this.img.src = `assets/pion ${this.color}.png`;
+      this.img.src = `/assets/pion ${this.color}.png`;
     } else {
       this.canPion = false;
     }
@@ -31,7 +31,7 @@ class Player {
     if (this.knight > 0) {
       this.knight--;
       this.value = 2;
-      this.img.src = `assets/knight ${this.color}.png`;
+      this.img.src = `/assets/knight ${this.color}.png`;
     } else {
       this.canKnight = false;
     }
@@ -41,7 +41,7 @@ class Player {
     if (this.king) {
       this.king--;
       this.value = 3;
-      this.img.src = `assets/king ${this.color}.png`;
+      this.img.src = `/assets/king ${this.color}.png`;
     } else {
       this.canKing = false;
     }
@@ -67,4 +67,4 @@ class Player {
   }
 }
 
-export { Player };
+export { Player }
