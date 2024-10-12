@@ -13,8 +13,8 @@ let isORound = true;  // Indicator for the current player's turn
 let category = 1;     // Default category for pieces
 
 // Initialize players
-const playerO = new Player("O");
-const playerX = new Player("X");
+const playerO = new Player("O"); // Human Player
+const playerX = new Player("X"); // AI Player
 
 // Create a 2D array for cells
 const cells = createCellGrid(cellCollections);
@@ -34,6 +34,7 @@ function createCellGrid(collections) {
       const el = collections[index++];
       row.push(el);
       el.dataset.category = 0;  // 0 = Empty, 1 = Peon, 2 = Knight, 3 = King
+      el.dataset.player = ''; // Initialize player to an empty string
     }
     grid.push(row);
   }
@@ -108,15 +109,15 @@ const disableAllCells = () => {
 
 // Handle cell click events
 const handleCellClick = async (event) => {
-  const clickedCell = event.currentTarget; // 2 Hour to debug this... Use currentTarget instead Target
-  const currentPlayer = isORound ? playerO : playerX;
+  const clickedCell = event.currentTarget; 
+  const currentPlayer = playerO; 
 
-  // Debug logs to check the state before processing
-  console.log("Current Player:", currentPlayer.text);
-  console.log("Current Player's Piece:", category);
-  console.log("Clicked Cell:", clickedCell);
-  console.log("Clicked Cell's Category:", clickedCell.dataset.category);
-  console.log("Clicked Cell's Player:", clickedCell.dataset.player);
+    // Debug logs to check the state before processing
+    console.log("Current Player:", currentPlayer.text);
+    console.log("Current Player's Piece:", category);
+    console.log("Clicked Cell:", clickedCell);
+    console.log("Clicked Cell's Category:", clickedCell.dataset.category);
+    console.log("Clicked Cell's Player:", clickedCell.dataset.player);
 
   // Check if the clicked cell already contains the player's piece
   if (clickedCell.dataset.player === currentPlayer.text) {
@@ -125,38 +126,115 @@ const handleCellClick = async (event) => {
   }
 
   if (category > clickedCell.dataset.category) {
-    await processPlayerMove(currentPlayer, clickedCell);
 
+    await processPlayerMove(currentPlayer, clickedCell);
+    
     // Debug Logs
     console.log("Clicked Cell's Category After:", clickedCell.dataset.category);
     console.log("Clicked Cell's Player After:", clickedCell.dataset.player);
-
-    // Only toggle the turn if the player successfully placed a piece
-    if (currentPlayer.canClick) {
-      isORound = !isORound; // Toggle turn only if the player placed a piece
+    
+    // After the player's turn, let the AI take its turn
+    if (currentPlayer.canClick) { 
+      await aiMove(); // Make AI move
     }
-  } 
-  
-  else {
+  } else {
     alert("Invalid Move! King > Knight > Peon");
     return;
   }
 };
 
+// Handle AI move
+const aiMove = async () => {
+  const validMoves = [];
+  console.log("AI is calculating its move...");
 
-const processPlayerMove = async (player, cell) => {
-  player.getPlayer(category);
+  // Loop through each category the AI can use
+  for (let aiCategory = 1; aiCategory <= 3; aiCategory++) {
+    // Check if AI has sufficient pieces of that category
+    let hasSufficientPieces = false;
+    if (aiCategory === 1 && playerX.pion > 0) {
+      hasSufficientPieces = true;
+    } else if (aiCategory === 2 && playerX.knight > 0) {
+      hasSufficientPieces = true;
+    } else if (aiCategory === 3 && playerX.king > 0) {
+      hasSufficientPieces = true;
+    }
+
+    // Only check the board if AI has sufficient pieces
+    if (hasSufficientPieces) {
+      ////console.log(`AI has sufficient pieces for category ${aiCategory}`);
+
+      // Collect valid moves for the current category
+      for (let i = 0; i < cells.length; i++) {
+        for (let j = 0; j < cells[i].length; j++) {
+          const cell = cells[i][j];
+          ////console.log(`AI considers placing category ${aiCategory} in cell (${i}, ${j})`);
+
+          // Debugging logs to understand cell properties
+          ////console.log(`Cell (${i}, ${j}) - category: ${cell.dataset.category}, player: ${cell.dataset.player}`);
+
+          // Check if the move is valid
+          const cellCategory = Number(cell.dataset.category);
+          const cellPlayer = cell.dataset.player;
+          const isEmptyCell = cellPlayer === '';
+          const isOpponentPiece = cellPlayer === playerO.text;
+
+          ////console.log(`Checking conditions: cellCategory < aiCategory: ${cellCategory < aiCategory}, isEmptyCell: ${isEmptyCell}, isOpponentPiece: ${isOpponentPiece}`);
+
+          if (
+            aiCategory > cellCategory && // Ensure AI's category is higher than cell's category
+            (isEmptyCell || isOpponentPiece) // Can replace opponent's piece
+          )
+           {
+            validMoves.push({ cell, category: aiCategory });
+            ////console.log(`Valid move found: category ${aiCategory} in cell (${i}, ${j})`);
+          } else {
+            ////console.log(`Invalid move: category ${aiCategory} in cell (${i}, ${j})`);
+          }
+        }
+      }
+    } else {
+      ////console.log(`AI does not have sufficient pieces for category ${aiCategory}`);
+    }
+  }
+
+  ////console.log(`Total valid moves: ${validMoves.length}`);
+
+  if (validMoves.length > 0) {
+    // Select a random valid move
+    const move = validMoves[Math.floor(Math.random() * validMoves.length)];
+    ////console.log(`AI selects move: category ${move.category} in cell ${move.cell.dataset.category}`);
+    await processPlayerMove(playerX, move.cell, move.category); // Process AI move
+  } else {
+    console.warn("No valid moves left for AI.");
+    alert("No valid moves left for AI.");
+  }
+};
+
+const processPlayerMove = async (player, cell, pieceCategory) => {
+
+    // Check if player can place this piece
+    if (pieceCategory === 1 && !player.canPion) {
+      alert("No Peons left to place.");
+      return;
+    }
+    if (pieceCategory === 2 && !player.canKnight) {
+      alert("No Knights left to place.");
+      return;
+    }
+    if (pieceCategory === 3 && !player.canKing) {
+      alert("No Kings left to place.");
+      return;
+    }
+
+  player.getPlayer(pieceCategory);
+
   if (player.canClick) {
     // Assigning Logic
     cell.dataset.player = player.text; 
-    cell.dataset.category = category; 
+    cell.dataset.category = pieceCategory; 
 
-    // Debug log
-    //console.log("Updated Cell:", cell);
-    //console.log("Cell's Player:", cell.dataset.player);
-    //console.log("Cell's Category:", cell.dataset.category);
-   
-    cell.innerHTML = ''; // Reset the image you idiota!
+    cell.innerHTML = ''; // Reset the image
     const cellImage = new Image();
     cellImage.src = player.img.src;
     cell.appendChild(cellImage);
@@ -164,12 +242,11 @@ const processPlayerMove = async (player, cell) => {
     const winningCells = checkWin(player.text);
     if (winningCells) {
       await highlightWinningCells(winningCells);
-      alert(`${player.text} wins!`);
+      alert(`${player.text} wins!`); // Corrected string interpolation
       disableAllCells();
+      gameEnded = true; // Stop AI take over the world
     }
-
-  } 
-  else {
+  } else {
     alert("No pieces left to place. Choose another category!");
     return;
   }
@@ -241,6 +318,5 @@ cells.forEach((cellRow) =>
   })
 );
 
-// Set up restart button functionality
 const restartButton = document.getElementById("restartButton");
 restartButton.addEventListener("click", resetGame);
