@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Handle "How To Play" pop-up
     const howToPlayPopUp = document.getElementById('popUp');
-    const howToPlayBtn = document.querySelectorAll('.menu-btn')[1];  // Correct index for "How To Play"
+    const howToPlayBtn = document.querySelectorAll('.menu-btn')[1];
     const closeHowToPlayBtn = document.querySelector('.close-btn');
 
     howToPlayBtn.addEventListener('click', () => {
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Handle "Start" pop-up
     const startPopUp = document.getElementById('popUp-Start');
-    const startBtn = document.querySelectorAll('.menu-btn')[0];  // Correct index for "Start"
+    const startBtn = document.querySelectorAll('.menu-btn')[0];
     const closeStartBtn = document.querySelector('.close-startbtn');
 
     startBtn.addEventListener('click', () => {
