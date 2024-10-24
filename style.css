@@ -5,7 +5,7 @@
     box-sizing: border-box;
     user-select: none;
     font-family: 'Poppins', sans-serif;
-    color: white;
+    color: #333333; 
 }
 
 html {
@@ -13,7 +13,7 @@ html {
 }
 
 main{
-    background: #0a0519;
+    background: #EAF6FF;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -29,7 +29,7 @@ main{
 }
 
 #header .player {
-    background: #17122A;
+    background: #FFD1C1;
     width: 75px; 
     height: 75px;
     display: flex;
@@ -39,26 +39,45 @@ main{
     font-weight: bold;
     cursor: pointer;
     border-radius: 14px;
-    border: solid 5px #17122A;
-    opacity: 0.5;
+    border: solid 2px #FF6F61;
+    opacity: 0.9;
     transition: 0.3s;
 }
 
 #header .player:hover {
-    border: solid 5px #2a2343;
+    border: solid 2px #FF4B3E; 
 }
 
 #header .player.player-active:hover {
     opacity: 1;
-    border: solid 5px #2a2343;
+    border: solid 2px #FF4B3E;
 }
 
+#scoreboard {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#scoreboard .score {
+    background: #FFD1C1;
+    padding: 10px 20px;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 10px;
+    color: #333333;
+    border: 2px solid #FF6F61;
+    text-align: center;
+}
+
+
+
 #header #displayPlayer1{
-    color: #1892ea;
+    color: #3498DB;
 }
 
 #header #displayPlayer2{
-    color: #ff6878;
+    color: #FF6F61;
 }
 
 #board{
@@ -70,16 +89,16 @@ main{
 
 #board .cell{
     display: flex;
-    background: #17122A;
+    background: #B3FFCC;
     border-radius: 14px; 
     align-items: center;
     justify-content: center;
     font-size: 34px;
     font-weight: bold;
     cursor: pointer;
+    border: solid 2px #A7E8BD;
 }
 
-/*Buat Jumlah Pion*/
 #pawn {
     padding-top: 20px;
     display: flex;
@@ -89,7 +108,7 @@ main{
 
 #pawn .pawnCell {
     display: flex;
-    background: #17122A;
+    background: #FFD1C1;
     border-radius: 14px;
     align-items: center;
     justify-content: center;
@@ -99,20 +118,23 @@ main{
     padding: 10px;
 }
 
+#pawn .pawnCell img {
+    width: 50px;
+    height: auto;
+}
 
 #restartButton{
     margin-top: 35px;
     padding: 8px 18px;
     font-size: 18px;
-    background: #17122A;
-    border: none;
+    background: #FFD1C1;
+    border: 2px solid #FF6F61; 
     border-radius: 10px;
-    color: white;
+    color: #333333;
     cursor: pointer;
     transition: 0.3s;
-    /*visibility: hidden; ini buat kalo udah menang atau kalah baru muncul*/ 
 }
 
 #restartButton:hover {
-    background: #2A2343;
+    background: #FFB3A1; 
 }
