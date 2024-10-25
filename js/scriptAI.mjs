@@ -280,7 +280,8 @@ const resetGame = () => {
       cell.addEventListener("click", handleCellClick);
     })
   );
-};
+};  
+
 
 // Reset a player's state
 function resetPlayerState(player) {
