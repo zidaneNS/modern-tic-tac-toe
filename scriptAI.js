@@ -1,7 +1,7 @@
 // -------------------------
 // Imports
 // -------------------------
-import { Player } from "./Player.mjs";
+const Player = require('./Player');
 
 // -------------------------
 // Constants and Variables
