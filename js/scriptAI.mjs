@@ -8,6 +8,9 @@ import { Player } from "./Player.mjs";
 // -------------------------
 const cellCollections = Array.from(document.getElementsByClassName("cell"));
 const title = document.getElementById("title");
+const buttonKing = document.getElementById("king");
+const buttonKnight = document.getElementById("knight");
+const buttonPion = document.getElementById("pion");
 
 let isORound = true;  // Indicator for the current player's turn
 let category = 1;     // Default category for pieces
@@ -294,21 +297,19 @@ function resetPlayerState(player) {
 // -------------------------
 
 // Handle player category selection via keyboard
-window.addEventListener("keydown", (e) => {
-  switch (e.key) {
-    case "1":
-      alert("You chose pion");
-      category = 1;
-      break;
-    case "2":
-      alert("You chose knight");
-      category = 2;
-      break;
-    case "3":
-      alert("You chose king");
-      category = 3;
-      break;
-  }
+buttonKing.addEventListener("click", (e) => {
+  alert("You chose king");
+  category = 3;
+});
+
+buttonKnight.addEventListener("click", (e) => {
+  alert("You chose knight");
+  category = 2;
+});
+
+buttonPion.addEventListener("click", (e) => {
+  alert("You chose pion");
+  category = 1;
 });
 
 // Initialize cell click events
